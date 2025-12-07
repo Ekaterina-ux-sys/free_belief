@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Духовний фільтр — Міні-уроки</title>
+  <style>
+    :root{--bg:#fbfbfd;--card:#ffffff;--muted:#6b6f76;--accent:#0b5cff}
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin:0; background:var(--bg); color:#111}
+    header{background:linear-gradient(90deg,#f7f9ff, #ffffff);border-bottom:1px solid #e6e8ee;padding:20px}
+    .container{max-width:1100px;margin:0 auto;padding:20px}
+    h1{margin:0;font-size:1.5rem}
+    .subtitle{color:var(--muted);margin-top:6px;font-size:0.95rem}
+    .grid{display:grid;gap:16px}
+    .grid.cols-3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .card{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(16,24,40,0.04);border:1px solid rgba(16,24,40,0.03)}
+    .lesson-title{font-weight:600;margin:8px 0}
+    .meta{color:var(--muted);font-size:0.9rem}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .btn{background:var(--accent);color:white;padding:8px 12px;border-radius:8px;border:none;cursor:pointer}
+    .btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(11,92,255,0.12)}
+    input,textarea,select{padding:8px;border-radius:8px;border:1px solid #e6e8ee;width:100%}
+    footer{padding:18px;border-top:1px solid #eef2ff;color:var(--muted);text-align:center;margin-top:32px}
+    .filters{display:flex;gap:8px;flex-wrap:wrap}
+    .note{font-size:0.9rem;color:#4b5563}
+    .yt-wrap{position:relative;padding-top:56.25%;overflow:hidden;border-radius:8px}
+    .yt-wrap iframe{position:absolute;left:0;top:0;width:100%;height:100%;border:0}
+    .badge{display:inline-block;background:#eef2ff;color:var(--accent);padding:4px 8px;border-radius:999px;font-size:0.8rem}
+    @media (max-width:640px){header{padding:12px}.container{padding:12px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Духовний фільтр — Міні-уроки (до 15 хв)</h1>
+      <div class="subtitle">База: віра в Ісуса Христа — Триєдиного Бога, Єдина Біблія. Короткі уроки про походження релігій та розгалуження конфесій.</div>
+    </div>
+  </header>
+
+  <main class="container" id="app">
+    <section class="card" style="margin-top:18px">
+      <strong>Про сайт</strong>
+      <p class="note">Цей сайт призначений для організації коротких (до 15 хв) відеоуроків з YouTube, які узгоджуються з християнською доктриною Трійці та біблійною перспективою щодо історії релігій і конфесій.</p>
+      <div style="margin-top:10px" class="controls">
+        <input id="search" placeholder="Пошук за назвою або темою" />
+        <select id="topicFilter">
+          <option value="">Усі теми</option>
+          <option value="історія">Історія релігій</option>
+          <option value="конфесії">Розгалуження конфесій</option>
+          <option value="біблія">Біблія і джерела</option>
+          <option value="практика">Практичні уроки</option>
+        </select>
+        <button class="btn" id="clearBtn">Очистити</button>
+      </div>
+    </section>
+
+    <section style="margin-top:16px" class="grid cols-3" id="lessonsList">
+      <!-- lessons injected here -->
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <strong>Додати урок (адмін)</strong>
+      <p class="note">Вставте посилання на YouTube (його тривалість має бути до 15 хв; сайт не перевіряє тривалість автоматично).</p>
+      <div style="margin-top:8px;display:grid;gap:8px">
+        <input id="title" placeholder="Назва уроку" />
+        <input id="ytUrl" placeholder="YouTube URL або ID" />
+        <select id="topic">
+          <option value="історія">Історія релігій</option>
+          <option value="конфесії">Розгалуження конфесій</option>
+          <option value="біблія">Біблія і джерела</option>
+          <option value="практика">Практичні уроки</option>
+        </select>
+        <textarea id="desc" rows="3" placeholder="Короткий опис (навіть 1-2 речення)"></textarea>
+        <div style="display:flex;gap:8px">
+          <button class="btn" id="addBtn">Додати урок</button>
+          <button class="btn ghost" id="exportBtn">Експорт JSON</button>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top:16px" class="card">
+      <strong>Пояснення / обмеження</strong>
+      <ul>
+        <li class="note">Контент повинен відповідати християнській доктрині Трійці і біблійному підходу — це вибір автора сайту.</li>
+        <li class="note">Сайт не здійснює автоматичної модерації тривалості відео; контролюйте це при додаванні.</li>
+        <li class="note">Горизонтальна фільтрація та пошук — локальні (без бекенду). Для багатьох користувачів додайте простий бекенд або CMS.</li>
+      </ul>
+    </section>
+
+    <footer>
+      <div class="note">Правова відповідальність: переконайтесь, що ви маєте право дублювати/використовувати відео та матеріали. Авторські права залишаються у власників контенту.</div>
+    </footer>
+  </main>
+
+  <script>
+    // Простий локальний менеджер уроків (зберігає в localStorage)
+    const storageKey = 'spiritual_lessons_v1'
+    const defaultLessons = [
+      {id: '1', title: 'Вступ: від джерел до розгалужень', yt:'dQw4w9WgXcQ', topic:'історія', desc:'Короткий огляд походження релігій (приклад)'}
+    ]
+
+    function loadLessons(){
+      const raw = localStorage.getItem(storageKey)
+      try{ return raw ? JSON.parse(raw) : defaultLessons }catch(e){return defaultLessons}
+    }
+    function saveLessons(list){ localStorage.setItem(storageKey, JSON.stringify(list)) }
+
+    let lessons = loadLessons()
+
+    const lessonsList = document.getElementById('lessonsList')
+    const search = document.getElementById('search')
+    const topicFilter = document.getElementById('topicFilter')
+    const clearBtn = document.getElementById('clearBtn')
+
+    function ytIdFromUrl(url){
+      if(!url) return ''
+      // supporting plain id or url formats
+      try{
+        // if it's just the id
+        if(!url.includes('youtube') && !url.includes('youtu.be')) return url.trim()
+        const u = new URL(url)
+        if(u.hostname.includes('youtu.be')) return u.pathname.slice(1)
+        if(u.searchParams.get('v')) return u.searchParams.get('v')
+        return ''
+      }catch(e){return url.trim()}
+    }
+
+    function renderLessons(){
+      const q = search.value.trim().toLowerCase()
+      const topic = topicFilter.value
+      lessonsList.innerHTML = ''
+      const filtered = lessons.filter(l=>{
+        const byQ = !q || l.title.toLowerCase().includes(q) || (l.desc||'').toLowerCase().includes(q)
+        const byT = !topic || l.topic===topic
+        return byQ && byT
+      })
+      if(filtered.length===0){ lessonsList.innerHTML = '<div class="card">Нема уроків за вашим запитом</div>'; return }
+      filtered.forEach(l=>{
+        const el = document.createElement('div'); el.className='card'
+        el.innerHTML = `
+          <div class="yt-wrap"><iframe loading="lazy" src="https://www.youtube.com/embed/${l.yt}" allowfullscreen></iframe></div>
+          <div style="margin-top:8px">
+            <div class="lesson-title">${escapeHtml(l.title)} <span style="float:right" class="badge">${escapeHtml(l.topic)}</span></div>
+            <div class="meta">${escapeHtml(l.desc||'')}</div>
+            <div style="margin-top:8px;display:flex;gap:8px">
+              <button class="btn" data-id="${l.id}" onclick="removeLesson('${l.id}')">Видалити</button>
+            </div>
+          </div>
+        `
+        lessonsList.appendChild(el)
+      })
+    }
+
+    function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+
+    window.removeLesson = function(id){
+      if(!confirm('Видалити урок?')) return
+      lessons = lessons.filter(x=>x.id!==id)
+      saveLessons(lessons)
+      renderLessons()
+    }
+
+    document.getElementById('addBtn').addEventListener('click', ()=>{
+      const title = document.getElementById('title').value.trim()
+      const url = document.getElementById('ytUrl').value.trim()
+      const desc = document.getElementById('desc').value.trim()
+      const topic = document.getElementById('topic').value
+      if(!title || !url){ alert('Заповніть назву та посилання/ID YouTube'); return }
+      const id = 'l'+Date.now()
+      const vid = ytIdFromUrl(url)
+      if(!vid){ alert('Не вдалося витягти ID відео. Вставте повне посилання або ID.'); return }
+      // NOTE: we assume адмін додає відео <=15 хв — сайт цього не перевіряє
+      const obj = {id, title, yt:vid, desc, topic}
+      lessons.unshift(obj)
+      saveLessons(lessons)
+      document.getElementById('title').value=''
+      document.getElementById('ytUrl').value=''
+      document.getElementById('desc').value=''
+      renderLessons()
+    })
+
+    document.getElementById('exportBtn').addEventListener('click', ()=>{
+      const data = JSON.stringify(lessons, null, 2)
+      const blob = new Blob([data], {type:'application/json'})
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a'); a.href = url; a.download = 'lessons.json'; a.click(); URL.revokeObjectURL(url)
+    })
+
+    search.addEventListener('input', renderLessons)
+    topicFilter.addEventListener('change', renderLessons)
+    clearBtn.addEventListener('click', ()=>{ search.value=''; topicFilter.value=''; renderLessons() })
+
+    // initial render
+    renderLessons()
+
+  </script>
+</body>
+</html>
